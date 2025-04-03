@@ -18,8 +18,8 @@ app.add_middleware(
 )
 
 UPLOAD_DIR = "uploads"
-os.makedirs(UPLOAD_DIR, exist_ok=True)  # Create directory if not exists
-
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+            
 @app.post("/extractPdfPages")
 async def extract_pdf_pages(file: UploadFile = File(...), pages: str = Form(...)):
     try:
@@ -70,11 +70,8 @@ async def extract_pdf_pages(file: UploadFile = File(...), pages: str = Form(...)
         print(f"Extracted PDF saved at {new_pdf_path}")  # Debug print to show where new PDF is saved
         new_pdf.close()
 
-        # Generate a public URL (Change this to match your server's domain)
-        download_url = f"https://pdf-trimmer-b296287835d4.herokuapp.com/{new_pdf_path}"
-        print(f"Generated download URL: {download_url}")  # Debug print to check the download URL
-        
-        return {"pdfUrl": download_url}
+        # Send the file as a response to download
+        return FileResponse(new_pdf_path, media_type='application/pdf', filename=os.path.basename(new_pdf_path))
 
     except Exception as e:
         print(f"An error occurred: {e}")  # Debug print to capture any other errors
