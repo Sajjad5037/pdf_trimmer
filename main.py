@@ -42,7 +42,16 @@ async def extract_pdf_pages(file: UploadFile = File(...), pages: str = Form(...)
             print(f"Failed to open PDF: {e}")
             return JSONResponse(status_code=500, content={"error": "Failed to open PDF."})
 
-        selected_pages = [int(p) - 1 for p in pages.split(",") if p.strip().isdigit()]
+        # Debugging: Print raw pages input
+        print(f"Raw pages input: {pages}")
+
+        # Strip any unwanted characters from `pages` and split by commas
+        pages = pages.strip()
+        page_list = pages.split(",")
+        print(f"Split pages list: {page_list}")  # Debug print after splitting by commas
+
+        # Parse the page numbers correctly
+        selected_pages = [int(p.strip()) - 1 for p in page_list if p.strip().isdigit()]
         print(f"Parsed page numbers: {selected_pages}")  # Debug print to check parsed pages
 
         if not selected_pages or min(selected_pages) < 0 or max(selected_pages) >= len(doc):
@@ -69,8 +78,6 @@ async def extract_pdf_pages(file: UploadFile = File(...), pages: str = Form(...)
 
     except Exception as e:
         print(f"An error occurred: {e}")  # Debug print to capture any other errors
-        return JSONResponse(status_code=500, content={"error": str(e)})
-
-if __name__ == "__main__":
+        return JSONResponse(status_code=500, content={"error": str(e)})if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
     uvicorn.run(app, host="0.0.0.0", port=port)
