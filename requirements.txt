@@ -1,3 +1,4 @@
+uvicorn==0.18.3
 annotated-types==0.7.0
 anyio==4.9.0
 fastapi==0.115.12
