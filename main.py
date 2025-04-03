@@ -1,5 +1,5 @@
 from fastapi import FastAPI, File, UploadFile, Form
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse,FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 import fitz  # PyMuPDF
 import shutil
