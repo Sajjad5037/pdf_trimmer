@@ -55,5 +55,5 @@ async def extract_pdf_pages(file: UploadFile = File(...), pages: str = Form(...)
         return JSONResponse(status_code=500, content={"error": str(e)})
 
 if __name__ == "__main__":
-    print("Starting FastAPI app...")
-    uvicorn.run("main:app", host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
